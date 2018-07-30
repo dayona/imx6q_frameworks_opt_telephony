@@ -45,17 +45,26 @@ public class IccUtils {
         StringBuilder ret = new StringBuilder(length*2);
 
         for (int i = offset ; i < offset + length ; i++) {
+            byte b;
             int v;
 
             v = data[i] & 0xf;
-            if (v > 9)  break;
-            ret.append((char)('0' + v));
+            if (v > 16)  break;
+            if((v > 9) && (v < 16)){
+               ret.append((char)(v -10 + 'A'));
+	    }else {
+               ret.append((char)('0' + v));
+            }
 
             v = (data[i] >> 4) & 0xf;
             // Some PLMNs have 'f' as high nibble, ignore it
             if (v == 0xf) continue;
-            if (v > 9)  break;
-            ret.append((char)('0' + v));
+            if (v > 16)  break;
+            if((v>9)&&(v<16)){
+                ret.append((char)(v -10 + 'A'));
+                }else{
+                ret.append((char)('0'+v));
+            }
         }
 
         return ret.toString();
